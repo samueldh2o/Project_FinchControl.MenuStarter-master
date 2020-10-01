@@ -14,7 +14,7 @@ namespace Project_FinchControl
     // Application Type: Console
     // Author: Samuel, Hoekwater
     // Dated Created: 10/1/2020
-    // Last Modified: 10/2/2020
+    // Last Modified: 10/1/2020
     //
     // **************************************************
 
