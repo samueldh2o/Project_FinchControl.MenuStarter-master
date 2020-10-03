@@ -9,8 +9,7 @@ namespace Project_FinchControl
     // **************************************************
     //
     // Title: Finch Control - Menu Starter
-    // Description: Starter solution with the helper methods,
-    //              opening and closing screens, and the menu
+    // Description: Finch Robot App
     // Application Type: Console
     // Author: Samuel, Hoekwater
     // Dated Created: 10/1/2020
@@ -38,8 +37,8 @@ namespace Project_FinchControl
         /// </summary>
         static void SetTheme()
         {
-            Console.ForegroundColor = ConsoleColor.DarkBlue;
-            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.BackgroundColor = ConsoleColor.Black;
         }
 
         /// <summary>
@@ -138,10 +137,11 @@ namespace Project_FinchControl
                 //
                 // get user menu choice
                 //
-                Console.WriteLine("\ta) Light and Sound");
+                Console.WriteLine("\ta) Light and Sound and movement");
                 Console.WriteLine("\tb) Dance with finch Robot");
-                Console.WriteLine("\tc) ");
-                Console.WriteLine("\td) ");
+                Console.WriteLine("\tc) Sing a song with robot ");
+                Console.WriteLine("\td) Control LED lights ");
+                Console.WriteLine("\te) Control Robot speed ");
                 Console.WriteLine("\tq) Main Menu");
                 Console.Write("\t\tEnter Choice:");
                 menuChoice = Console.ReadLine().ToLower();
@@ -152,7 +152,7 @@ namespace Project_FinchControl
                 switch (menuChoice)
                 {
                     case "a":
-                        DisplayLightAndSound(finchRobot);
+                        DisplayLightAndSoundAndMovement(finchRobot);
                         break;
 
                     case "b":
@@ -160,11 +160,16 @@ namespace Project_FinchControl
                         break;
 
                     case "c":
+                        DisplaySongWithFinch(finchRobot);
 
                         break;
 
                     case "d":
+                        DispayLightControleWithFinch(finchRobot);
+                        break;
 
+                    case "e":
+                        DispaySpeedControleWithFinch(finchRobot);
                         break;
 
                     case "q":
@@ -180,7 +185,233 @@ namespace Project_FinchControl
 
             } while (!quitTalentShowMenu);
         }
+        /// <summary>
+        /// ***********
+        /// Speed
+        /// ***********
+        /// </summary>
+        /// <param name="finchRobot"></param>
+         static void DispaySpeedControleWithFinch(Finch finchRobot)
+        {  
+            bool validResponse2;
+            string userResponse;
+            int speed;
 
+            DisplayScreenHeader("Speed Control with Finch Robot");
+            Console.WriteLine();
+            DisplayContinuePrompt();
+
+           
+            //
+            // get the speed
+            //
+            Console.WriteLine();
+            validResponse2 = false;
+            do
+            {
+                Console.WriteLine("\t Enter a speed 0-255 ");
+                userResponse = Console.ReadLine();
+
+                if (int.TryParse(userResponse, out speed) && speed > 0)
+                {
+
+                    validResponse2 = true;
+                }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("\tplease enter a real number");
+                    Console.WriteLine();
+                }
+            } while (!validResponse2);
+
+            Console.WriteLine();
+            Console.WriteLine("\t you have chosen {0} for your speed", speed);
+            DisplayContinuePrompt();
+
+            finchRobot.setMotors(speed, speed);
+            finchRobot.wait(5000);
+            finchRobot.setMotors(0, 0);
+
+
+
+
+
+
+        }
+
+        /// <summary>
+        /// Light Controls
+        /// </summary>
+        /// <param name="finchRobot"></param>
+        static void DispayLightControleWithFinch(Finch finchRobot)
+        {
+            bool quitLightShowMenu = true;
+             string colorChoice;
+            do
+            {
+                DisplayScreenHeader("Light Control with Finch Robot");
+                Console.WriteLine();
+                DisplayContinuePrompt();
+
+               
+
+                DisplayScreenHeader("Choose A LED Light Color");
+
+                //
+                // get user light
+                //
+                Console.WriteLine("\tred");
+                Console.WriteLine("\tgreen");
+                Console.WriteLine("\tblue");
+                Console.Write("\t\tEnter Choice:");
+                colorChoice = Console.ReadLine().ToLower();
+                //
+                // echo back
+                //
+                Console.WriteLine();
+                Console.WriteLine(" you have chosen {0} for your LED color light.", colorChoice);
+                DisplayContinuePrompt();
+
+                switch (colorChoice)
+                {
+                    case "red":
+                        finchRobot.setLED(255, 0, 0);
+                        finchRobot.wait(4000);
+                        finchRobot.setLED(0, 0, 0);
+                        break;
+
+                    case "blue":
+                        finchRobot.setLED(0, 0, 255);
+                        finchRobot.wait(4000);
+                        finchRobot.setLED(0, 0, 0);
+                        break;
+
+                    case "green":
+                        finchRobot.setLED(0, 255, 0);
+                        finchRobot.wait(4000);
+                        finchRobot.setLED(0, 0, 0);
+                        break;
+
+
+
+                    default:
+                        Console.WriteLine();
+                        Console.WriteLine("\t Sorry this is not a option Please enter a color from the menu choice.");
+                        DisplayContinuePrompt();
+                        break;
+
+
+
+                }
+            } while (!quitLightShowMenu);
+           
+        }
+        /// <summary>
+        /// **********
+        ///   Song with bot
+        /// *********
+        /// </summary>
+        /// <param name="finchRobot"></param>
+        static void DisplaySongWithFinch(Finch finchRobot)
+        {
+            DisplayScreenHeader("Song With Finch Robot");
+            Console.WriteLine();
+            Console.WriteLine("\tThe Finch robot will now sing for you!");
+            DisplayContinuePrompt();
+
+            finchRobot.noteOn(587);
+            finchRobot.wait(1000);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(784);
+            finchRobot.wait(2000);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(988);
+            finchRobot.wait(250);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(880);
+            finchRobot.wait(250);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(784);
+            finchRobot.wait(250);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(988);
+            finchRobot.wait(2000);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(988);
+            finchRobot.wait(250);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(880);
+            finchRobot.wait(250);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(784);
+            finchRobot.wait(2000);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(659);
+            finchRobot.wait(1000);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(587);
+            finchRobot.wait(2000);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(587);
+            finchRobot.wait(1000);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(784);
+            finchRobot.wait(2000);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(988);
+            finchRobot.wait(250);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(880);
+            finchRobot.wait(250);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(784);
+            finchRobot.wait(250);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(988);
+            finchRobot.wait(2000);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(880);
+            finchRobot.wait(250);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(988);
+            finchRobot.wait(250);
+            finchRobot.noteOff();
+
+            finchRobot.noteOn(1174);
+            finchRobot.wait(2000);
+            finchRobot.noteOff();
+
+
+
+
+
+        }
+
+        /// <summary>
+        /// ******************
+        ///        Dance
+        /// *****************
+        /// </summary>
+        /// <param name="finchRobot"></param>
         static void DisplayDanceWithFinch(Finch finchRobot)
         {
             DisplayScreenHeader("Dance With Finch Robot");
@@ -191,9 +422,14 @@ namespace Project_FinchControl
             for (int i = 0; i < 13; i++)
             {
                 finchRobot.setMotors(255, 128);
-                finchRobot.wait(1000);
+                finchRobot.wait(500);
                 finchRobot.setMotors(128, 255);
-                finchRobot.wait(1000);
+                finchRobot.wait(500);
+                finchRobot.setMotors(0, 0);
+                finchRobot.setMotors(-128, 128);
+                finchRobot.wait(500);
+                finchRobot.setMotors(0, 0);
+
 
             }
 
@@ -203,11 +439,11 @@ namespace Project_FinchControl
 
         /// <summary>
         /// *****************************************************************
-        /// *               Talent Show > Light and Sound                   *
+        /// *               Talent Show > Light and Sound  > Move                *
         /// *****************************************************************
         /// </summary>
         /// <param name="finchRobot">finch robot object</param>
-        static void DisplayLightAndSound(Finch finchRobot)
+        static void DisplayLightAndSoundAndMovement(Finch finchRobot)
         {
             Console.CursorVisible = false;
 
@@ -218,8 +454,12 @@ namespace Project_FinchControl
 
             for (int lightSoundLevel = 0; lightSoundLevel < 255; lightSoundLevel++)
             {
+                finchRobot.setMotors(-120, 120);
                 finchRobot.setLED(lightSoundLevel, lightSoundLevel, lightSoundLevel);
                 finchRobot.noteOn(lightSoundLevel * 100);
+                finchRobot.setMotors(0, 0);
+                finchRobot.noteOff();
+                
             }
 
             DisplayMenuPrompt("Talent Show Menu");
