@@ -136,8 +136,7 @@ namespace Project_FinchControl
             
             do
             {
-                DisplayScreenHeader("Data Recorder Menu");
-
+                DisplayScreenHeader("Data Recorder Menu") 
                 //
                 // get user menu choice
                 //
