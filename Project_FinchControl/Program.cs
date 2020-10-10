@@ -141,6 +141,7 @@ namespace Project_FinchControl
                 //
                 // get user menu choice
                 //
+
                 Console.WriteLine("\ta) Get the Number of Data Points");
                 Console.WriteLine("\tb) Get the Freqency of Data points");
                 Console.WriteLine("\tc) Get the Data set  ");
