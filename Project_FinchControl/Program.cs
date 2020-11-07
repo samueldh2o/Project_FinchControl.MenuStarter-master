@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using FinchAPI;
 
+
 namespace Project_FinchControl
 {
 
@@ -14,7 +15,7 @@ namespace Project_FinchControl
     // Application Type: Console
     // Author: Samuel, Hoekwater
     // Dated Created: 10/1/2020
-    // Last Modified: 10/31/2020
+    // Last Modified: 11/6/2020
     //
     // **************************************************
 
@@ -57,8 +58,109 @@ namespace Project_FinchControl
         /// </summary>
         static void SetTheme()
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.BackgroundColor = ConsoleColor.Black;
+            SetuserTheme();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.Write("\tDo you want to change the theme befor you start The Finch aplication");
+            Console.WriteLine();
+            if (Console.ReadLine().ToLower() == "yes")
+            {
+                DisplyGetThemeFromUser();
+            }
+            else
+            {
+                SetuserTheme();
+            }
+          
+            
+            
+        }
+        static void DisplyGetThemeFromUser()
+        {
+            Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine("\t Please choose a new Background and Foreground color ");
+            //
+            // get theme strings from user
+            //
+            Console.WriteLine();
+            Console.Write("Background:");
+            string background = Console.ReadLine();
+            Console.Write("Foreground:");
+            string foreground = Console.ReadLine();
+
+            //
+            // parse theme strings
+            //
+            Enum.TryParse(background, out ConsoleColor backgroundColor);
+            Enum.TryParse(foreground, out ConsoleColor foregroundColor);
+
+            //
+            // set new theme
+            //
+            Console.BackgroundColor = backgroundColor;
+            Console.ForegroundColor = foregroundColor;
+            Console.Clear();
+
+            WritThemetoDataFile(backgroundColor, foregroundColor);
+
+
+            Console.WriteLine();
+            Console.WriteLine("\t Is this the theme you would like?");
+            if (Console.ReadLine().ToLower() == "yes")
+            {
+                DisplayWelcomeScreen();
+                
+            }
+            else
+            {
+                DisplyGetThemeFromUser();
+            }
+
+            
+        }
+        static void WritThemetoDataFile(ConsoleColor background, ConsoleColor foreground)
+        {
+            string dataPath = @"Data\Data.txt";
+            string theme = background + "," + foreground;
+            File.WriteAllText(dataPath, theme);
+        }
+        static void ReadThemeFromDataFile(out ConsoleColor backgroundColor, out ConsoleColor foregroundColor)
+        {
+            string dataPath = @"Data\Data.txt";
+            string fileText;
+            string[] fileTextArray;
+
+
+
+           
+
+
+            //
+            // read theme from data file (single line, comma delineated)
+            //
+            fileText = File.ReadAllText(dataPath);
+
+            //
+            // parse data 
+            //
+            fileTextArray = fileText.Split(',');
+            Enum.TryParse(fileTextArray[0], out backgroundColor);
+            Enum.TryParse(fileTextArray[1], out foregroundColor);
+
+        }
+        static void SetuserTheme()
+        {
+
+
+            ConsoleColor foregroundColor;
+            ConsoleColor backgroundColor;
+
+            ReadThemeFromDataFile(out backgroundColor, out foregroundColor);
+
+            Console.BackgroundColor = backgroundColor;
+            Console.ForegroundColor = foregroundColor;
+            Console.Clear();
         }
 
         /// <summary>
@@ -441,6 +543,9 @@ namespace Project_FinchControl
             DisplayMenuPrompt("User Programing:");
             return CommandPerameter;
         }
+
+        #endregion
+
         #region ALARM SYSTEM
 
         /// <summary>
@@ -1430,7 +1535,7 @@ namespace Project_FinchControl
 
             Console.Clear();
             Console.WriteLine();
-            Console.WriteLine("\t\tFinch Control");
+            Console.WriteLine("\t\t Welcome to Finch Control");
             Console.WriteLine();
 
             DisplayContinuePrompt();
@@ -1486,6 +1591,6 @@ namespace Project_FinchControl
 
         #endregion
 
-        #endregion
+       
     }
 }
